@@ -154,14 +154,12 @@ if __name__ == '__main__':
     pytorch_image = pypng()
     st.image(pytorch_image, width = 500)
     
-    st.title("The Image Captioning Bot")
+    st.title("Image Caption Generator")
     st.text("")
     st.text("")
-    st.success("Welcome! Please upload an image!"
+    st.success("Welcome! Please upload an image to generate caption!"
     )   
-    
-    args = { 'sunset' : 'imgs/sunset.jpeg' }
-    
+    args = { 'image' : 'imgs/sunset.jpeg' }
     img_upload  = st.file_uploader(label= 'Upload Image', type = ['png', 'jpg', 'jpeg','webp'])
     
     img_open = args['sunset'] if img_upload is None else img_upload
