@@ -20,7 +20,7 @@ device = 'cpu'
 
 st.set_page_config(
     initial_sidebar_state="expanded",
-    page_title="CaptionBot 2.0"
+    page_title="Image Caption Generator"
 )
 
 
@@ -133,7 +133,7 @@ def predict_caption(image_bytes):
         print(caption)
         captions.append(caption)
     for i in range(len(captions)):
-        s = ("** Beam index " + str(i + 1) + ": " + captions[i] + "**")
+        s = ("** Caption " + str(i + 1) + ": " + captions[i] + "**")
         st.markdown(s)        
 
 @st.cache(ttl=3600, max_entries=10)
@@ -151,7 +151,7 @@ def load_output_image(img):
 
 @st.cache(ttl=3600, max_entries=10)
 def pypng():
-    image = Image.open('data/pytorch.png')
+    image = Image.open('data/logo.png')
     return image
     
 if __name__ == '__main__':
