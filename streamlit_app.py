@@ -143,7 +143,7 @@ def load_output_image(img):
 
 @st.cache(ttl=3600, max_entries=10)
 def pypng():
-    image = Image.open('data/pytorch.png')
+    image = Image.open('data/logo.png')
     return image
     
 if __name__ == '__main__':
