@@ -128,12 +128,14 @@ if __name__ == '__main__':
     st.title("Image Caption Generator")
     st.text("")
     st.success("Welcome! Please upload an image to generate caption!")   
-    img_upload  = st.file_uploader(label= 'Upload Image', type = ['png', 'jpg', 'jpeg','webp'])  
-    img_open = img_upload
+    args = { 'sunset' : 'imgs/sunset.jpeg' }
+    img_upload  = st.file_uploader(label= 'Upload Image', type = ['png', 'jpg', 'jpeg','webp'])
+    img_open = args['sunset'] if img_upload is None else img_upload
+    image = load_output_image(img_open)
     image = load_output_image(img_open)
     st.image(image,use_column_width=True)
     # img_bytes earlier
     if st.button('Generate captions!'):
         predict_caption(image)
         st.success("Click again to retry or try a different image by uploading")
-        st.balloons()
+        st.balloons()  
