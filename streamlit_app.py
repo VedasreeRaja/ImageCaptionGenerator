@@ -133,4 +133,4 @@ if __name__ == '__main__':
     if st.button('Generate captions!'):
         predict_caption(image)
         st.success("Click again to retry or try a different image by uploading")
-        st.balloons()
+        st.snow()
