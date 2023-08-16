@@ -130,8 +130,8 @@ if __name__ == '__main__':
     st.success("Welcome! Please upload an image to generate caption!")   
     args = { 'sunset' : 'imgs/sunset.jpeg' }
     img_upload  = st.file_uploader(label= 'Upload Image', type = ['png', 'jpg', 'jpeg','webp'])
-    img_open = args['sunset'] if img_upload is None else img_upload
-    image = load_output_image(img_open)
+    img_open = img_upload
+    #img_open = args['sunset'] if img_upload is None else img_upload
     image = load_output_image(img_open)
     st.image(image,use_column_width=True)
     # img_bytes earlier
