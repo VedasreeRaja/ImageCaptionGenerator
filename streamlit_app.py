@@ -104,7 +104,7 @@ def predict_caption(image_bytes):
         print(caption)
         captions.append(caption)
     for i in range(len(captions)):
-        s = ("** Beam index " + str(i + 1) + ": " + captions[i] + "**")
+        s = ("** Caption " + str(i + 1) + ": " + captions[i] + "**")
         st.markdown(s)        
 @st.cache(ttl=3600, max_entries=10)
 def load_output_image(img):
