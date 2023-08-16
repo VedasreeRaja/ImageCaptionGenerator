@@ -63,7 +63,7 @@ def download_data():
     else:
         print("Model 2 is here.")
 
-@st.cache_data
+@st.cache
 def load_model():
     
     # global vocab
