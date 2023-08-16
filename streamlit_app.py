@@ -151,11 +151,10 @@ if __name__ == '__main__':
     download_data()
     vocab, encoder, decoder = load_model()
     
-    pytorch_image = pypng()
-    st.image(pytorch_image, width = 500)
+    logo_image = pypng()
+    st.image(logo_image, width = 500)
     
     st.title("Image Caption Generator")
-    st.text("")
     st.text("")
     st.success("Welcome! Please upload an image to generate caption!"
     )   
@@ -166,7 +165,7 @@ if __name__ == '__main__':
     
     image = load_output_image(img_open)
 
-    st.image(image,use_column_width=True,caption="Your image")
+    st.image(image,use_column_width=True)
 
     # img_bytes earlier
     if st.button('Generate captions!'):
