@@ -15,22 +15,30 @@ import requests
 import os
 from io import BytesIO
 import wget
+
 device = 'cpu'
+
 st.set_page_config(
     initial_sidebar_state="expanded",
-    page_title="Image Caption Generator"
+    page_title="CaptionBot 2.0"
 )
+
+
 def transform_image(image):
     mean = [0.485, 0.456, 0.406]
+
     std = [0.229, 0.224, 0.225]
+
     transform = transforms.Compose(
         [transforms.Resize((256,256)),
         transforms.ToTensor(),
         transforms.Normalize(mean, std)]
     )
-    #image = Image.open(io.BytesIO(image) ).convert("RGB")
+#     image = Image.open(io.BytesIO(img_bytes) ).convert("RGB")
     return transform(image)
+
 def load_checkpoint(checkpoint, model, optimizer):
+    
     model.load_state_dict(checkpoint["state_dict"])
     optimizer.load_state_dict(checkpoint["optimizer"])
     step = checkpoint["step"]
@@ -65,10 +73,16 @@ def download_data():
 
 @st.cache
 def load_model():
+    
+    # global vocab
     vocab = Vocab_Builder(freq_threshold = 5)
+
+    # Load the pickle dump
     vocab_path = './vocab (1).pickle'
+
     with open(vocab_path, 'rb') as f:
         vocab = pickle.load(f)
+
     print(len(vocab))
     embed_size = 350
     encoder_dim = 1024
@@ -76,23 +90,38 @@ def load_model():
     attention_dim = 512
     vocab_size = len(vocab)
     learning_rate = 4e-5 # Modifed it after 10th epoch
-    resnet_path = './resnet50_captioning.pt'
+    # resnet_path = './resnet50_captioning.pt'
     resnet_path = './resnet5010.pt'
-    encoder = EncoderCNN() 
+    
+    encoder = EncoderCNN()
+
+    # Load resnet weights
     encoder.load_state_dict( torch.load( resnet_path, map_location = 'cpu') )
     encoder.to(device)
     encoder.eval() # V. important to switch off Dropout and BatchNorm
+
+    # decoder_path = './LastModelResnet50_v2_16.pth.tar'
     decoder_path = './Flickr30k_Decoder_10.pth.tar'
+    # global decoder
     decoder = Decoder(encoder_dim, decoder_dim, embed_size, vocab_size, attention_dim, device)    
+
     optimizer = optim.Adam(decoder.parameters(), lr = learning_rate)
+    
     checkpoint = torch.load(decoder_path,map_location='cpu')
     decoder.load_state_dict(checkpoint["state_dict"])
     optimizer.load_state_dict(checkpoint["optimizer"])
     step = checkpoint["step"]
+
+    # return step
+    #   step = load_checkpoint(torch.load(decoder_path ,map_location = 'cpu'), decoder, optimizer)
+
     decoder = decoder.to(device)
     decoder.eval()
+    
     return vocab, encoder, decoder
+
 def predict_caption(image_bytes):
+    
     captions = []
     img_t = transform_image(image_bytes)
     for i in range(1,6):
@@ -104,37 +133,50 @@ def predict_caption(image_bytes):
         print(caption)
         captions.append(caption)
     for i in range(len(captions)):
-        s = ("** Caption " + str(i + 1) + ": " + captions[i] + "**")
+        s = ("** Beam index " + str(i + 1) + ": " + captions[i] + "**")
         st.markdown(s)        
+
 @st.cache(ttl=3600, max_entries=10)
 def load_output_image(img):
+    
     if isinstance(img, str): 
         image = Image.open(img)
     else:
         img_bytes = img.read() 
         image = Image.open(io.BytesIO(img_bytes) ).convert("RGB")
+    
     # Auto - orient refer https://stackoverflow.com/a/58116860
     image = ImageOps.exif_transpose(image) 
     return image
+
 @st.cache(ttl=3600, max_entries=10)
 def pypng():
-    image = Image.open('data/logo.png')
+    image = Image.open('data/pytorch.png')
     return image
+    
 if __name__ == '__main__':
+
     download_data()
     vocab, encoder, decoder = load_model()
+    
     logo_image = pypng()
     st.image(logo_image, width = 500)
+    
     st.title("Image Caption Generator")
-    st.text("")
-    st.success("Welcome! Please upload an image to generate caption!")   
+    st.text("") 
+    st.success("Welcome to Image Caption Generator! Please upload an image!"
+    )   
     args = { 'sunset' : 'imgs/sunset.jpeg' }
     img_upload  = st.file_uploader(label= 'Upload Image', type = ['png', 'jpg', 'jpeg','webp'])
     img_open = args['sunset'] if img_upload is None else img_upload
+    
     image = load_output_image(img_open)
-    st.image(image,use_column_width=True)
+     
+    st.image(image,use_column_width=True,caption="Your image")
+
     # img_bytes earlier
     if st.button('Generate captions!'):
         predict_caption(image)
         st.success("Click again to retry or try a different image by uploading")
-        st.balloons()  
+        st.balloons()
+        
