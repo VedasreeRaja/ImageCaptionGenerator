@@ -28,7 +28,7 @@ def transform_image(image):
         transforms.ToTensor(),
         transforms.Normalize(mean, std)]
     )
-    image = Image.open(io.BytesIO(image) ).convert("RGB")
+    #image = Image.open(io.BytesIO(image) ).convert("RGB")
     return transform(image)
 def load_checkpoint(checkpoint, model, optimizer):
     model.load_state_dict(checkpoint["state_dict"])
