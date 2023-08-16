@@ -162,7 +162,7 @@ if __name__ == '__main__':
     args = { 'image' : 'imgs/sunset.jpeg' }
     img_upload  = st.file_uploader(label= 'Upload Image', type = ['png', 'jpg', 'jpeg','webp'])
     
-    img_open = args['sunset'] if img_upload is None else img_upload
+    img_open = args['image'] if img_upload is None else img_upload
     
     image = load_output_image(img_open)
 
