@@ -129,7 +129,7 @@ if __name__ == '__main__':
     img_upload  = st.file_uploader(label= 'Upload Image', type = ['png', 'jpg', 'jpeg','webp'])
     img_open = args['sunset'] if img_upload is None else img_upload
     image = load_output_image(img_open)
-    # img_bytes earlier
+    st.image(image,use_column_width=True)
     if st.button('Generate captions!'):
         predict_caption(image)
         st.success("Click again to retry or try a different image by uploading")
