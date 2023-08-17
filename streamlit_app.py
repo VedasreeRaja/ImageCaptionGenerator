@@ -28,7 +28,6 @@ def transform_image(image):
         transforms.ToTensor(),
         transforms.Normalize(mean, std)]
     )
-#     image = Image.open(io.BytesIO(img_bytes) ).convert("RGB")
     return transform(image)
 def load_checkpoint(checkpoint, model, optimizer):
     model.load_state_dict(checkpoint["state_dict"])
@@ -39,10 +38,6 @@ def load_checkpoint(checkpoint, model, optimizer):
 def download_data():
     path1 = './Flickr30k_Decoder_10.pth.tar'
     path2 = './resnet5010.pt'
-    # Local
-    # path1 = './data/LastModelResnet50_v2_16.pth.tar'
-    # path2 = './data/resnet50_captioning.pt'
-    # print("I am here.")
     if not os.path.exists(path1):
         decoder_url = 'wget -O ./Flickr30k_Decoder_10.pth.tar https://www.dropbox.com/s/cf2ox65vi7c2fou/Flickr30k_Decoder_10.pth.tar?dl=0'
         with st.spinner('done!\nmodel weights were not found, downloading them...'):
@@ -67,25 +62,19 @@ def load_model():
     decoder_dim = 512
     attention_dim = 512
     vocab_size = len(vocab)
-    learning_rate = 4e-5 # Modifed it after 10th epoch
-    # resnet_path = './resnet50_captioning.pt'
+    learning_rate = 4e-5 
     resnet_path = './resnet5010.pt'
     encoder = EncoderCNN()
-    # Load resnet weights
     encoder.load_state_dict( torch.load( resnet_path, map_location = 'cpu') )
     encoder.to(device)
-    encoder.eval() # V. important to switch off Dropout and BatchNorm
-    # decoder_path = './LastModelResnet50_v2_16.pth.tar'
+    encoder.eval() 
     decoder_path = './Flickr30k_Decoder_10.pth.tar'
-    # global decoder
     decoder = Decoder(encoder_dim, decoder_dim, embed_size, vocab_size, attention_dim, device)    
     optimizer = optim.Adam(decoder.parameters(), lr = learning_rate)
     checkpoint = torch.load(decoder_path,map_location='cpu')
     decoder.load_state_dict(checkpoint["state_dict"])
     optimizer.load_state_dict(checkpoint["optimizer"])
     step = checkpoint["step"]
-    # return step
-    #   step = load_checkpoint(torch.load(decoder_path ,map_location = 'cpu'), decoder, optimizer)
     decoder = decoder.to(device)
     decoder.eval()
     return vocab, encoder, decoder
@@ -109,8 +98,7 @@ def load_output_image(img):
         image = Image.open(img)
     else:
         img_bytes = img.read() 
-        image = Image.open(io.BytesIO(img_bytes) ).convert("RGB")
-    # Auto - orient refer https://stackoverflow.com/a/58116860
+        image = Image.open(io.BytesIO(img_bytes) ).convert("RGB") 
     image = ImageOps.exif_transpose(image) 
     return image
 @st.cache(ttl=3600, max_entries=10)
