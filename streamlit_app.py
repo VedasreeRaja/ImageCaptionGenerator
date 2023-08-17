@@ -53,7 +53,7 @@ def download_data():
 @st.cache
 def load_model(): 
     vocab = Vocab_Builder(freq_threshold = 5)
-    vocab_path = './vocab (1).pickle'
+    vocab_path = './vocab.pickle'
     with open(vocab_path, 'rb') as f:
         vocab = pickle.load(f)
     print(len(vocab))
