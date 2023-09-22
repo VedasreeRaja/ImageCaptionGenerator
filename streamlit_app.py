@@ -153,7 +153,7 @@ if __name__ == '__main__':
             sum+=bleu_score
             #s2 = ('**BLEU score -> {:.4f}**'.format(bleu_score))
             #st.markdown(s2)
-            hypothesis_text = prediction_caption
+            hypothesis_text = predicted_caption
             for reference_text in reference_texts:
                 rouge_l_score = rouge_l_f1(hypothesis_text, reference_text)
                 print(f"ROUGE-L Score (F1) for Reference: {rouge_l_score:.4f}")
