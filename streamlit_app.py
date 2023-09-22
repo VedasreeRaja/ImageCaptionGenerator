@@ -8,7 +8,6 @@ import torch.optim as optim
 import torchvision.transforms as transforms
 import torch.nn.functional as F
 import torchvision.models as models
-import matplotlib
 import matplotlib.pyplot as plt
 from PIL import Image, ImageOps
 import io
