@@ -130,10 +130,11 @@ if __name__ == '__main__':
         sentences = predict_caption(image)
         for predicted_caption in sentences:
             predicted_caption_tokens = predicted_caption.split()
-            s = ("** Generated Caption : " + predicted_caption + "**")
-            st.markdown(s)   
+            s1 = ("** Generated Caption : " + predicted_caption + "**")
+            st.markdown(s1)   
             bleu_score = sentence_bleu(reference, predicted_caption_tokens)
-            st.markdown('BLEU score -> {:.4f}'.format(bleu_score))
+            s2 = ('**BLEU score -> {:.4f}**'.format(bleu_score))
+            st.markdown(s)
         st.success("Click again to retry or try a different image by uploading")
         st.balloons()
         
