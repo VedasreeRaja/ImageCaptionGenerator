@@ -85,7 +85,6 @@ def load_model():
     decoder.eval()
     return vocab, encoder, decoder
 def predict_caption(image_bytes):
-    captions = []
     img_t = transform_image(image_bytes)
     for i in range(1,6):
         encoded_output = encoder(img_t.unsqueeze(0).to(device))
@@ -93,10 +92,8 @@ def predict_caption(image_bytes):
         caps = caps[1:-1]
         caption = [vocab.itos[idx] for idx in caps]
         caption = ' '.join(caption)
-        print(caption)
-        captions.append(caption)
-    for i in range(len(captions)):
-        s = ("** Generated Caption " +str(i+1)+": " + captions[i] + "**")
+        return caption
+        s = ("** Generated Caption : " + caption + "**")
         st.markdown(s)        
 @st.cache(ttl=3600, max_entries=10)
 def load_output_image(img):
