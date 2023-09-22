@@ -130,9 +130,9 @@ if __name__ == '__main__':
         sentences = predict_caption(image)
         for predicted_caption in sentences:
             predicted_caption_tokens = predicted_caption.split()
-            print(predicted_caption_tokens)
+            st.text(prediction_caption)
             bleu_score = sentence_bleu(reference, predicted_caption_tokens)
-            print('BLEU score -> {:.4f}'.format(bleu_score))
+            st.text('BLEU score -> {:.4f}'.format(bleu_score))
         st.success("Click again to retry or try a different image by uploading")
         st.balloons()
         
