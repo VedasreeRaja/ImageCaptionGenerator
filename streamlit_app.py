@@ -15,6 +15,8 @@ import streamlit as st
 import requests
 import os
 from io import BytesIO
+from nltk.util import ngrams
+from nltk.metrics import *
 from nltk.translate.bleu_score import sentence_bleu
 import wget
 reference = []
@@ -111,8 +113,21 @@ def load_output_image(img):
 @st.cache(ttl=3600, max_entries=10)
 def pypng():
     image = Image.open('data/logo.png')
-    return image
-
+    return image 
+def rouge_l_f1(hypothesis, reference):
+    hypothesis_tokens = hypothesis.split()
+    reference_tokens = reference.split()
+    lcs = list(nltk.lcs(hypothesis_tokens, reference_tokens))
+    precision = len(lcs) / len(hypothesis_tokens)
+    recall = len(lcs) / len(reference_tokens)
+    if precision + recall == 0:
+        f1_score = 0
+    else:
+        f1_score = (2 * precision * recall) / (precision + recall)
+    return f1_score
+with open('captions.txt', 'r') as file:
+    reference_texts = [line.strip() for line in file]
+    
 if __name__ == '__main__':
     download_data()
     vocab, encoder, decoder = load_model()
@@ -138,9 +153,12 @@ if __name__ == '__main__':
             sum+=bleu_score
             #s2 = ('**BLEU score -> {:.4f}**'.format(bleu_score))
             #st.markdown(s2)
+            hypothesis_text = prediction_caption
+            for reference_text in reference_texts:
+                rouge_l_score = rouge_l_f1(hypothesis_text, reference_text)
+                print(f"ROUGE-L Score (F1) for Reference: {rouge_l_score:.4f}")
         average = sum/5
         s2 = ('**Average BLEU score -> {:.4f}**'.format(average))
         st.markdown(s2)
         st.success("Click again to retry or try a different image by uploading")
         st.balloons()
-        
