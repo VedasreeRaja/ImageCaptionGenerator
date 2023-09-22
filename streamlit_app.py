@@ -85,15 +85,20 @@ def load_model():
     decoder.eval()
     return vocab, encoder, decoder
 def predict_caption(image_bytes):
+    captions = []
     img_t = transform_image(image_bytes)
-    encoded_output = encoder(img_t.unsqueeze(0).to(device))
-    caps = decoder.beam_search(encoded_output)
-    caps = caps[1:-1]
-    caption = [vocab.itos[idx] for idx in caps]
-    caption = ' '.join(caption)
-    s = ("** Generated Caption : " + caption + "**")
-    st.markdown(s)        
-    return caption
+    for i in range(1,6):
+        encoded_output = encoder(img_t.unsqueeze(0).to(device))
+        caps = decoder.beam_search(encoded_output,i)
+        caps = caps[1:-1]
+        caption = [vocab.itos[idx] for idx in caps]
+        caption = ' '.join(caption)
+        print(caption)
+        captions.append(caption)
+    for i in range(len(captions)):
+        s = ("** Caption " + str(i + 1) + ": " + captions[i] + "**")
+        st.markdown(s)        
+    return captions
 @st.cache(ttl=3600, max_entries=10)
 def load_output_image(img):
     if isinstance(img, str): 
@@ -122,9 +127,12 @@ if __name__ == '__main__':
     image = load_output_image(img_open)
     st.image(image,use_column_width=True)
     if st.button('Generate captions!'):
-        sentence = predict_caption(image) 
-        bleu_score = sentence_bleu(reference, sentence.split())
-        st.text('BLEU score -> {:.4f}'.format(bleu_score))
+        sentences = predict_caption(image)
+        for predicted_caption in sentences:
+        predicted_caption_tokens = predicted_caption.split()
+        print(predicted_caption_tokens)
+        bleu_score = sentence_bleu(reference, predicted_caption_tokens)
+        print('BLEU score -> {:.4f}'.format(bleu_score))
         st.success("Click again to retry or try a different image by uploading")
         st.balloons()
         
