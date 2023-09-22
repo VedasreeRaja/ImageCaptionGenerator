@@ -134,10 +134,10 @@ if __name__ == '__main__':
             st.markdown(s1)   
             bleu = []
             bleu_score = sentence_bleu(reference, predicted_caption_tokens)
-            bleu.append(bleu_score)
+            sum+=bleu_score
             #s2 = ('**BLEU score -> {:.4f}**'.format(bleu_score))
             #st.markdown(s2)
-        average = sum(bleu)/5
+        average = sum/5
         s2 = ('**Average BLEU score -> {:.4f}**'.format(average))
         st.markdown(s2)
         st.success("Click again to retry or try a different image by uploading")
