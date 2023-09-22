@@ -81,7 +81,7 @@ def load_model():
 def predict_caption(image_bytes):
     captions = []
     img_t = transform_image(image_bytes)
-    for i in range(1,6):
+    for i in range(1,2):
         encoded_output = encoder(img_t.unsqueeze(0).to(device))
         caps = decoder.beam_search(encoded_output,i)
         caps = caps[1:-1]
@@ -105,7 +105,13 @@ def load_output_image(img):
 def pypng():
     image = Image.open('data/logo.png')
     return image
+
 if __name__ == '__main__':
+    reference = []
+    with open('/content/sample_data/captions.txt', 'r') as file:
+        for line in file:
+            reference.append(line.strip().split()) 
+    from nltk.translate.bleu_score import sentence_bleu
     download_data()
     vocab, encoder, decoder = load_model()
     logo_image = pypng()
@@ -120,5 +126,10 @@ if __name__ == '__main__':
     st.image(image,use_column_width=True)
     if st.button('Generate captions!'):
         predict_caption(image)
+        sentence = predict_caption(image) 
+        predicted_caption = sentence.split()
+        bleu_score = sentence_bleu(reference, predicted_caption)
+        st.text('BLEU score -> {:.4f}'.format(bleu_score))
         st.success("Click again to retry or try a different image by uploading")
         st.balloons()
+        
