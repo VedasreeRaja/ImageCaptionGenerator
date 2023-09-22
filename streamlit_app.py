@@ -153,6 +153,7 @@ if __name__ == '__main__':
     if st.button('Generate captions!'):
         sentences = predict_caption(image)
         sum = 0
+        sum2 = 0
         for predicted_caption in sentences:
             predicted_caption_tokens = predicted_caption.split()
             s1 = ("** Generated Caption : " + predicted_caption + "**")
@@ -170,7 +171,8 @@ if __name__ == '__main__':
         for reference_text in reference_texts:
             rouge_l_score = rouge_l_f1(hypothesis_text, reference_text)
             rouge_l_scores.append(rouge_l_score)
-            average_rouge_l = sum(rouge_l_scores) / len(rouge_l_scores)
+            sum2 += rouge_l_score
+        average_rouge_l = sum2 / len(rouge_l_scores)
         st.write(f"Average ROUGE-L Score (F1) for {len(reference_texts)} reference sentences: {average_rouge_l:.4f}")
         #for reference_text in reference_texts:
         #       rouge_l_score = rouge_l_f1(hypothesis_text, reference_text)
