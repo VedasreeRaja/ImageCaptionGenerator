@@ -128,6 +128,7 @@ if __name__ == '__main__':
     st.image(image,use_column_width=True)
     if st.button('Generate captions!'):
         sentences = predict_caption(image)
+        sum = 0
         for predicted_caption in sentences:
             predicted_caption_tokens = predicted_caption.split()
             s1 = ("** Generated Caption : " + predicted_caption + "**")
