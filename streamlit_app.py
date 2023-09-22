@@ -87,7 +87,7 @@ def load_model():
 def predict_caption(image_bytes):
     img_t = transform_image(image_bytes)
     encoded_output = encoder(img_t.unsqueeze(0).to(device))
-    caps = decoder.beam_search(encoded_output,i)
+    caps = decoder.beam_search(encoded_output)
     caps = caps[1:-1]
     caption = [vocab.itos[idx] for idx in caps]
     caption = ' '.join(caption)
