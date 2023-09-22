@@ -15,7 +15,12 @@ import streamlit as st
 import requests
 import os
 from io import BytesIO
+from nltk.translate.bleu_score import sentence_bleu
 import wget
+reference = []
+with open('captions.txt', 'r') as file:
+    for line in file:
+        reference.append(line.strip().split()) 
 device = 'cpu'
 st.set_page_config(
     initial_sidebar_state="expanded",
@@ -108,11 +113,6 @@ def pypng():
     return image
 
 if __name__ == '__main__':
-    reference = []
-    with open('captions.txt', 'r') as file:
-        for line in file:
-            reference.append(line.strip().split()) 
-    from nltk.translate.bleu_score import sentence_bleu
     download_data()
     vocab, encoder, decoder = load_model()
     logo_image = pypng()
