@@ -108,7 +108,7 @@ def pypng():
 
 if __name__ == '__main__':
     reference = []
-    with open('/content/sample_data/captions.txt', 'r') as file:
+    with open('captions.txt', 'r') as file:
         for line in file:
             reference.append(line.strip().split()) 
     from nltk.translate.bleu_score import sentence_bleu
