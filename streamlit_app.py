@@ -95,9 +95,9 @@ def predict_caption(image_bytes):
         caption = ' '.join(caption)
         print(caption)
         captions.append(caption)
-    for i in range(len(captions)):
-        s = ("** Caption " + str(i + 1) + ": " + captions[i] + "**")
-        st.markdown(s)        
+#    for i in range(len(captions)):
+ #       s = ("** Caption " + str(i + 1) + ": " + captions[i] + "**")
+#      st.markdown(s)        
     return captions
 @st.cache(ttl=3600, max_entries=10)
 def load_output_image(img):
@@ -130,9 +130,10 @@ if __name__ == '__main__':
         sentences = predict_caption(image)
         for predicted_caption in sentences:
             predicted_caption_tokens = predicted_caption.split()
-            st.text(predicted_caption)
+            s = ("** Generated Caption : " + predicted_caption + "**")
+            st.markdown(s)   
             bleu_score = sentence_bleu(reference, predicted_caption_tokens)
-            st.text('BLEU score -> {:.4f}'.format(bleu_score))
+            st.markdown('BLEU score -> {:.4f}'.format(bleu_score))
         st.success("Click again to retry or try a different image by uploading")
         st.balloons()
         
