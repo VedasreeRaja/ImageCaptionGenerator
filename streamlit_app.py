@@ -114,12 +114,22 @@ def load_output_image(img):
 def pypng():
     image = Image.open('data/logo.png')
     return image 
+def longest_common_subsequence(tokens1, tokens2):
+    m, n = len(tokens1), len(tokens2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if tokens1[i - 1] == tokens2[j - 1]:
+                dp[i][j] = dp[i - 1][j - 1] + 1
+            else:
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+    return dp[m][n]
 def rouge_l_f1(hypothesis, reference):
     hypothesis_tokens = hypothesis.split()
     reference_tokens = reference.split()
-    lcs = list(nltk.lcs(hypothesis_tokens, reference_tokens))
-    precision = len(lcs) / len(hypothesis_tokens)
-    recall = len(lcs) / len(reference_tokens)
+    lcs_length = longest_common_subsequence(hypothesis_tokens, reference_tokens)
+    precision = lcs_length / len(hypothesis_tokens)
+    recall = lcs_length / len(reference_tokens)
     if precision + recall == 0:
         f1_score = 0
     else:
@@ -127,7 +137,6 @@ def rouge_l_f1(hypothesis, reference):
     return f1_score
 with open('captions.txt', 'r') as file:
     reference_texts = [line.strip() for line in file]
-    
 if __name__ == '__main__':
     download_data()
     vocab, encoder, decoder = load_model()
