@@ -2,6 +2,7 @@ import pickle
 from model import BahdanauAttention, EncoderCNN, Decoder
 from vocab import Vocab_Builder
 import torch
+import nltk
 import torch.nn as nn
 import torch.optim as optim
 import torchvision.transforms as transforms
