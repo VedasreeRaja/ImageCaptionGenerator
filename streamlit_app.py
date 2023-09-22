@@ -126,9 +126,8 @@ if __name__ == '__main__':
     image = load_output_image(img_open)
     st.image(image,use_column_width=True)
     if st.button('Generate captions!'):
-        sentence = predict_caption(image) 
-        predicted_caption = sentence.split()
-        bleu_score = sentence_bleu(reference, predicted_caption)
+        sentence = predict_caption(image)  
+        bleu_score = sentence_bleu(reference, sentence.split())
         st.text('BLEU score -> {:.4f}'.format(bleu_score))
         st.success("Click again to retry or try a different image by uploading")
         st.balloons()
