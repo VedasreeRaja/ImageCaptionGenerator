@@ -165,7 +165,7 @@ if __name__ == '__main__':
             hypothesis_text = predicted_caption
             for reference_text in reference_texts:
                 rouge_l_score = rouge_l_f1(hypothesis_text, reference_text)
-        s3 = "ROUGE-L Score (F1) for Reference: {rouge_l_score:.4f}"
+        s3 = ('**ROUGE-L Score (F1)  : {rouge_l_score:.4f}'.format(rougle_l_score))
         st.markdown(s3)
         average = sum/5
         s2 = ('**Average BLEU score -> {:.4f}**'.format(average))
