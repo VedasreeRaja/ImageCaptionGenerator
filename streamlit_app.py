@@ -162,13 +162,13 @@ if __name__ == '__main__':
             sum+=bleu_score
             #s2 = ('**BLEU score -> {:.4f}**'.format(bleu_score))
             #st.markdown(s2)
-            hypothesis_text = predicted_caption
-            for reference_text in reference_texts:
-                rouge_l_score = rouge_l_f1(hypothesis_text, reference_text)
-        s3 = ('**ROUGE-L Score -> {:.4f}**'.format(rougle_l_score))
-        st.markdown(s3)
         average = sum/5
         s2 = ('**Average BLEU score -> {:.4f}**'.format(average))
         st.markdown(s2)
+        hypothesis_text = predicted_caption
+        for reference_text in reference_texts:
+                rouge_l_score = rouge_l_f1(hypothesis_text, reference_text)
+                s3 = ('**ROUGE-L Score -> {:.4f}**'.format(rougle_l_score))
+                st.markdown(s3)
         st.success("Click again to retry or try a different image by uploading")
         st.balloons()
