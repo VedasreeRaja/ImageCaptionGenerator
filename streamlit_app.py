@@ -137,9 +137,9 @@ if __name__ == '__main__':
             bleu.append(bleu_score)
             #s2 = ('**BLEU score -> {:.4f}**'.format(bleu_score))
             #st.markdown(s2)
-            average = sum(bleu)/5
-            s2 = ('**Average BLEU score -> {:.4f}**'.format(average))
-            st.markdown(s2)
+        average = sum(bleu)/5
+        s2 = ('**Average BLEU score -> {:.4f}**'.format(average))
+        st.markdown(s2)
         st.success("Click again to retry or try a different image by uploading")
         st.balloons()
         
