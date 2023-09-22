@@ -134,7 +134,7 @@ if __name__ == '__main__':
             st.markdown(s1)   
             bleu_score = sentence_bleu(reference, predicted_caption_tokens)
             s2 = ('**BLEU score -> {:.4f}**'.format(bleu_score))
-            st.markdown(s)
+            st.markdown(s2)
         st.success("Click again to retry or try a different image by uploading")
         st.balloons()
         
