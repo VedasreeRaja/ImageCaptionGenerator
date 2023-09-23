@@ -182,7 +182,7 @@ if __name__ == '__main__':
             predicted_caption_tokens = predicted_caption.split()
             bleu_score = sentence_bleu(reference, predicted_caption_tokens)
             bleu.append(bleu_score)
-        plt.figure(figsize=(10, 6))
+        plt.figure(figsize=(5, 7))
         plt.bar(range(len(bleu)), bleu, tick_label=[f"Caption {i+1}" for i in range(len(bleu))],color='red')
         plt.xlabel("Generated Captions")
         plt.ylabel("BLEU Score")
