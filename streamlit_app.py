@@ -156,15 +156,13 @@ if __name__ == '__main__':
         sentences = predict_caption(image)
         sum = 0
         sum2 = 0
+        bleu = []
         for predicted_caption in sentences:
             predicted_caption_tokens = predicted_caption.split()
             s1 = ("** Generated Caption : " + predicted_caption + "**")
             st.markdown(s1)   
-            bleu = []
             bleu_score = sentence_bleu(reference, predicted_caption_tokens)
             sum+=bleu_score
-            #s2 = ('**BLEU score -> {:.4f}**'.format(bleu_score))
-            #st.markdown(s2)
         average = sum/5
         s2 = ('**Average BLEU score -> {:.4f}**'.format(average))
         st.markdown(s2)
@@ -180,11 +178,15 @@ if __name__ == '__main__':
         st.markdown(s3)
         s3 =  (f"**Average ROUGE-L Score (F1) for {len(reference_texts)} reference sentences: {average_rouge_l:.4f}**")
         st.markdown(s3)
-        #plt.figure(figsize=(10, 6))
-        #plt.bar(range(len(bleu)), bleu_score, tick_label=[f"Caption {i+1}" for i in range(len(sentences))])
-        #plt.xlabel("Generated Captions")
-        #plt.ylabel("BLEU Score")
-        #plt.title("BLEU Scores for Generated Captions")
-        #st.pyplot(plt)
+        for predicted_caption in sentences:
+            predicted_caption_tokens = predicted_caption.split()
+            bleu_score = sentence_bleu(reference, predicted_caption_tokens)
+            bleu.append(bleu_score)
+        plt.figure(figsize=(10, 6))
+        plt.bar(range(len(bleu)), bleu, tick_label=[f"Caption {i+1}" for i in range(len(bleu))],color='red')
+        plt.xlabel("Generated Captions")
+        plt.ylabel("BLEU Score")
+        plt.title("BLEU Scores for Generated Captions")
+        st.pyplot(plt)
         st.success("Click again to retry or try a different image by uploading")
         st.balloons()
